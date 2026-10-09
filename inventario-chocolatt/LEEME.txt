@@ -1,0 +1,48 @@
+CHOCOLATT — CONSUMO FIRMADO, EXCEL Y MEMORIA DE SELECCIONES
+
+INSTALACIÓN
+1. Copia src y tests de este ZIP sobre las carpetas de tu proyecto y acepta reemplazar.
+2. Ejecuta npm run check (pruebas y compilación) o npm run build.
+3. Publica el nuevo dist y acepta Actualizar app en todos los dispositivos.
+No hay dependencias nuevas. Este ZIP acumula las actualizaciones anteriores; no es un proyecto completo y no sustituye tu configuración de Firebase.
+
+FIREBASE
+Los nuevos registros y firmas se guardan en la colección trasladosConsumo; el inventario sigue en inventario.
+La colección nueva necesita permiso para consultar, crear, actualizar y eliminar documentos con el mismo criterio de autorización que ya usas para inventario.
+Si tus reglas ya cubren todas las colecciones autorizadas, puede no ser necesario cambiarlas. Si nombran solo productos e inventario, añade el acceso a trasladosConsumo usando la misma condición existente. No se incluye una regla pública ni se cambia tu autenticación.
+Si aparece un aviso de permisos en Consumo, revisa esa colección en las reglas de Firestore. Las otras pantallas siguen utilizando las colecciones actuales.
+No se han probado ni modificado tus reglas o datos reales de Firebase; se comprobó el adaptador y las transacciones compartidas con el modo de demostración.
+
+REFRESCOS EN EXCEL
+El redondeo se aplica solamente al exportar; no cambia los movimientos, los recuentos ni las existencias.
+Se divide el total entre 24: cajas completas + 0 si sobran 0–8; +0,5 si sobran 9–16; +1 si sobran 17–23.
+Ejemplos: 48 y 56 unidades → 2,0; 57 y 64 → 2,5; 65 y 71 → 3,0.
+Los valores de Excel son numéricos. Las cantidades de alcohol y menaje conservan sus decimales.
+Global sigue mostrando cajas-sueltos = total exacto, por ejemplo 2-9 = 57.
+La regla se aplica al inventario, al consumo calculado en Recuento y al nuevo Excel Traslados. El filtro de consumo > 0 se evalúa sobre las unidades reales antes del redondeo: un consumo pequeño puede aparecer como 0,0 cajas.
+Cada celda y total se convierte desde sus unidades exactas; por el redondeo, sumar celdas redondeadas puede diferir del total convertido.
+
+CONSUMO FIRMADO
+1. Elige destino, producto, origen y cantidad como hasta ahora.
+2. Añadir abre el recuadro de firma, con Cancelar y Aceptar.
+3. Hasta aceptar una firma no se guarda el movimiento ni se modifica el stock.
+4. Aceptar guarda firma, registro y cambios de inventario en una sola transacción.
+La lista inferior muestra solo movimientos realizados desde Consumo y firmados con esta versión. Traspasos no crea registros en esa lista. Los movimientos antiguos no tenían firmas ni un registro individual y no se reconstruyen artificialmente.
+Editar permite cambiar producto, origen, destino y cantidad; requiere una nueva firma. Cancela la edición con Cancelar edición.
+Eliminar revierte el movimiento. Si el movimiento ya estaba incluido en un recuento, se corrigen su teórico y consumo, conservando la cantidad física contada. Si era posterior, se corrigen las existencias actuales.
+No se guardan correcciones que dejarían existencias negativas. Una vez cerrado/reiniciado el período de inventario, sus registros antiguos no se pueden corregir contra el nuevo período: descarga y vacía la lista al cerrar la noche.
+Descargar traslados crea Traslados_AAAA-MM-DD.xlsx con exactamente Barra, Producto, Cantidad y Firma. La firma se incorpora como imagen en la fila. Se exporta solo la lista de Consumo, sin movimientos de Traspasos ni filas de Recuento.
+Vaciar consumo pide confirmación y elimina registros y firmas de la lista; no toca inventario, balances ni recuentos. Descarga antes para conservar las firmas. Los registros que otro dispositivo añada después de abrir la confirmación no se borran.
+Descargar un Excel no vacía la lista ni bloquea ediciones.
+
+MEMORIA
+Cada pantalla conserva producto y sus ubicaciones seleccionadas al salir y volver, y también al recargar o reabrir en el mismo navegador/dispositivo.
+Recuento conserva su barra y Productos la categoría elegida para añadir. Las selecciones son independientes por pantalla. Los favoritos anteriores se mantienen.
+Las cantidades y las firmas pendientes no se guardan como operaciones confirmadas al cambiar de pantalla.
+Para un dispositivo sin preferencias guardadas: Consumo usa Almacén → B.Medio; Traspasos usa Auxiliar → B.Chocolatt.
+
+COMPROBACIONES
+45 pruebas de lógica, ESLint y compilación correctos.
+Pruebas de navegador móvil: cancelar/aceptar firma, nueva firma al editar, eliminación, vaciado sin cambio de inventario, recarga, selección persistente, Global exacto y descargas.
+XLSX descargados y abiertos: redondeo numérico, archivo de cuatro columnas y PNG de firma incorporado en D2; solo el movimiento firmado de Consumo.
+Pruebas transaccionales: ediciones concurrentes, recuentos anteriores/posteriores, rutas entre barras, cambio de producto, stock insuficiente, permisos rechazados, persistencia y vaciado de más de 400 registros.

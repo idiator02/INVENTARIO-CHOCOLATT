@@ -1,0 +1,25 @@
+Verificación de Chocolatt 1.1
+
+ESLint: sin errores ni avisos.
+Pruebas de lógica: 19/19 superadas.
+Compilaciones de producción y demo: completadas.
+Auditoría de dependencias de producción: 0 vulnerabilidades informadas.
+
+Pruebas en Chromium 153 con datos ficticios:
+OK · Traspasos con coma decimal; rechazo de negativos y stock insuficiente.
+OK · Recuento a cero, corrección y recuperación después de recargar.
+OK · Deshacer bloqueado tras movimientos posteriores.
+OK · Vaciar el recuento conserva el stock.
+OK · Alta y eliminación de un producto a cero.
+OK · Borrado de producto con stock rechazado con error visible en el diálogo.
+OK · Búsqueda de Tónica escribiendo tonica.
+OK · Descarga de consumo e inventario como XLSX reales.
+OK · Archivos XLSX abiertos con openpyxl: cantidades numéricas y consumo esperado.
+OK · Manifiesto y service worker: ningún error de instalabilidad detectado por Chromium.
+OK · Prueba aislada de recarga sin conexión: interfaz y datos demo disponibles; navegador offline, campos deshabilitados y sin errores JavaScript.
+OK · Las cuatro pantallas sin desbordamiento a 320, 390, 844 y 1366 píxeles.
+OK · Capturas revisadas en móvil y escritorio.
+
+Las pruebas de operaciones en navegador bloquean peticiones externas y no acceden a Firebase.
+La prueba sin conexión se ha realizado separadamente de la inspección CDP de instalación.
+No se ha verificado la base de datos real, sus reglas, el alojamiento final ni teléfonos físicos.

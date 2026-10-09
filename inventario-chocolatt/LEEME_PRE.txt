@@ -1,0 +1,34 @@
+CHOCOLATT PRE — CONFIGURACIÓN INDEPENDIENTE
+
+Copia scripts/build-pre.mjs y firebase.pre.json en la carpeta actual del proyecto
+(donde está package.json). Conserva la carpeta scripts.
+No cambies .env ni sustituyas el código de src/firebase.js.
+
+1. Generar y comprobar PRE:
+   node scripts/build-pre.mjs
+
+2. Instalar la herramienta de publicación (una sola vez):
+   npm install -g firebase-tools
+   firebase login
+
+3. Publicar SOLO la web de pruebas:
+   firebase deploy --only hosting --project prechocolatt --config firebase.pre.json
+
+El comando regenera PRE antes de publicar. No ejecuta despliegues de Firestore.
+Dirección tras publicar: https://prechocolatt.web.app
+Si Hosting indica que el sitio no existe, actívalo en la consola de prechocolatt.
+
+PERMISOS PENDIENTES
+Firestore se creó en modo producción (acceso denegado). Hasta configurar sus
+reglas y el acceso de usuarios, la web mostrará un error de permisos al consultar
+o guardar datos. Este paquete no abre la base a todo el mundo ni modifica reglas.
+Se necesita completar esa configuración en el proyecto PRE para probar movimientos.
+
+Producción sigue usando npm run build y su configuración actual.
+PRE usa el mismo código y una conexión fija a prechocolatt, sin heredar los valores
+Firebase de .env. Produce dist-pre; no modifica dist. No copia datos reales.
+Favoritos, selecciones, caché y aplicación instalada quedan separados por dirección.
+No publiques dist-pre en la dirección de producción.
+
+Documentación de publicación:
+https://firebase.google.com/docs/hosting/quickstart
